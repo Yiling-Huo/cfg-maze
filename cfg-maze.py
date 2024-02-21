@@ -36,8 +36,11 @@ with open('assets/cfg.csv', 'r') as inputfile:
 # or just give a dictionary of all possible words
 #cfg = {"NP":[["D","N"],"cats","dogs","humans"],"VP":[["V","NP"],"walk","sleep","cry"],"S":[["NP","VP"]],"D":["the","a"],"N":["cat","dog","human"],"V":["love","tolerate","like"]}
 
+# save a list of adverbs for probability manipulation
+ADs = [i for i in cfg['AD'] if type(i) == str]
+
 # a dictionary that has nodes as keys, and nodes that are identical or can occupy the same syntactic position as the node as values
-block_list = {'NPs':['NPs','Ns','NPp','Np','A'], 'NPp':['NPs','Ns','NPp','Np','A'], 'Ns':['Ns','Np','NPs','NPp','A'], 'Np':['Ns','Np','NPs','NPp','A'],'VPs':['VPs','Vs','AD'], 'VPp':['VPp','Vp','AD'], 'Vs':['Vs', 'VPs','AD'], 'Vp':['Vp', 'VPp','AD'], 'DP':['DP','D','NPp','Np','A'], 'D':['DP','D','NPp','Np','A'], 'A':['A','NPs','Ns','NPp','Np','D','DP'], 'AD':['AD']}
+block_list = {'NPs':['NPs','Ns','NPp','Np','A'], 'NPp':['NPs','Ns','NPp','Np','A','DP','D'], 'Ns':['Ns','Np','NPs','NPp','A'], 'Np':['Ns','Np','NPs','NPp','A'],'VPs':['VPs','Vs','AD'], 'VPp':['VPp','Vp','AD'], 'Vs':['Vs', 'VPs','AD'], 'Vp':['Vp', 'VPp','AD'], 'DP':['DP','D','NPp','Np','A'], 'D':['DP','D','NPp','Np','A'], 'A':['A','NPs','Ns','NPp','Np','D','DP'], 'AD':['AD']}
 
 ##########
 # Classes
@@ -104,14 +107,19 @@ def generate(cfg, node='S'):
     if type(expansion) == list:
         return generate(cfg, expansion[0]) + generate(cfg, expansion[1])
     elif type(expansion) == str:
-        # block the node that makes sense after the current node
-        blocked_nodes = block_list[node]
-        # get a dictionary without the blocked node
-        option_pool = {key:cfg[key] for key in [i for i in list(cfg.keys()) if i not in blocked_nodes]}
-        # get a list of options to choose from from the values of option_pool that are strings
-        options = [x for lis in list(option_pool.values()) for x in lis if type(x) == str]
-        option = random.choice(options)
-        return [expansion, option]
+        # just to make the sentences longer on average, if a string is selected that's not an adverb and we're working in one of the NPp/NPs nodes, give it a chance to select again
+        rand = random.randrange(0, 10)
+        if (rand < 7) and (len(node) > 2) and (expansion not in ADs):
+            return generate(cfg, node)
+        else:
+            # block the node that makes sense after the current node
+            blocked_nodes = block_list[node]
+            # get a dictionary without the blocked node
+            option_pool = {key:cfg[key] for key in [i for i in list(cfg.keys()) if i not in blocked_nodes]}
+            # get a list of options to choose from from the values of option_pool that are strings
+            options = [x for lis in list(option_pool.values()) for x in lis if type(x) == str]
+            option = random.choice(options)
+            return [expansion, option]
 
 # wipe screen
 def wipe():
@@ -270,9 +278,9 @@ def main():
         if not started:
             message1 = text_font.render('Welcome to the CFG Maze game!', True, midnight)
             message2 = text_font_small.render('Please select the option that makes the sentence grammatical.', True, midnight)
-            message3 = text_font_small.render('Begin:', True, midnight)
+            message3 = text_font_small.render('The sentence does not have to make sense, unfortunately...', True, midnight)
             screen.blit(message1, message1.get_rect(center = (350, 100)))
-            screen.blit(message2, message2.get_rect(center = (350, 165)))
+            screen.blit(message2, message2.get_rect(center = (350, 190)))
             screen.blit(message3, message3.get_rect(center = (350, 230)))
             start_button.draw()
         elif trial_count == 20:
