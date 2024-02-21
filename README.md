@@ -15,12 +15,12 @@ Console version:
 
 ## Tips
 
-Add more words to assets/cfg.csv to make the corpus larger.
+Add more words to `assets/cfg.csv` to make the corpus larger.
 
 ## Screenshots
 
-![screenshot1](assets/screenshot1.png)
+![screenshot1](images/screenshot1.png)
 
-![screenshot2](assets/screenshot2.png)
+![screenshot2](images/screenshot2.png)
 
-![screenshot3](assets/screenshot3.png)
+![screenshot3](images/screenshot3.png)
