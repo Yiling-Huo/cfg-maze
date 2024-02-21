@@ -37,7 +37,7 @@ with open('assets/cfg.csv', 'r') as inputfile:
 #cfg = {"NP":[["D","N"],"cats","dogs","humans"],"VP":[["V","NP"],"walk","sleep","cry"],"S":[["NP","VP"]],"D":["the","a"],"N":["cat","dog","human"],"V":["love","tolerate","like"]}
 
 # a dictionary that has nodes as keys, and nodes that are identical or can occupy the same syntactic position as the node as values
-block_list = {'NP':['NP','N'], 'N':['N','NP'], 'VP':['VP', 'V'], 'V':['V', 'VP'], 'D':['D','NP', 'N']}
+block_list = {'NPs':['NPs','Ns','NPp','Np','A'], 'NPp':['NPs','Ns','NPp','Np','A'], 'Ns':['Ns','Np','NPs','NPp','A'], 'Np':['Ns','Np','NPs','NPp','A'],'VPs':['VPs','Vs','AD'], 'VPp':['VPp','Vp','AD'], 'Vs':['Vs', 'VPs'], 'Vp':['Vp', 'VPp'], 'DP':['DP','D','NPp','Np','A'], 'D':['DP','D','NPp','Np','A'], 'A':['A','NPs','Ns','NPp','Np','D','DP'], 'AD':['AD']}
 
 ##########
 # Classes
@@ -195,8 +195,8 @@ def correct():
         while True:
             current_time = pygame.time.get_ticks()
             # repeat what's done in main loop to prevent freezing
-            message = text_font.render(' '.join(selected), True, midnight)
-            screen.blit(message, message.get_rect(topleft = (150, 130)))
+            message = text_font.render(' '.join(selected)+'.', True, midnight)
+            screen.blit(message, message.get_rect(topleft = (75, 130)))
             # print correct message
             correct = text_font_small.render('Congrats!', True, midnight)
             screen.blit(correct, correct.get_rect(center = (250, 65)))
@@ -219,16 +219,16 @@ def wrong():
         current_time = pygame.time.get_ticks()
         # repeat what's done in main loop to prevent freezing
         message = text_font.render(' '.join(selected), True, midnight)
-        screen.blit(message, message.get_rect(topleft = (150, 130)))
+        screen.blit(message, message.get_rect(topleft = (75, 130)))
         # print wrong message
         wrong = text_font_small.render('Wrong...', True, midnight)
         screen.blit(wrong, wrong.get_rect(center = (250, 65)))
         # print answer
         answer_list = [i[0] for i in sentence.values()][len(selected):]
-        answer = ' '+' '.join(answer_list)
+        answer = ' '+' '.join(answer_list)+'.'
         message = text_font.render(answer, True, tiffany)
-        # when consolas size 30, a character is approximately 17 wide?
-        screen.blit(message, message.get_rect(topleft = (150+(len(' '.join(selected))*17), 130)))
+        # when consolas size 14, a character is approximately 13 wide?
+        screen.blit(message, message.get_rect(topleft = (75+(len(' '.join(selected))*13), 130)))
         pygame.display.flip()
         if current_time - start_time >= delay:
             init_trial()
@@ -250,8 +250,8 @@ def main():
     pygame.display.set_caption('CFG Maze Game')
     screen.fill(baby)
     text_font_small = pygame.font.SysFont('consolas',20)
-    text_font = pygame.font.SysFont('consolas',30)
-    button_font = pygame.font.SysFont('consolas',30)
+    text_font = pygame.font.SysFont('consolas',24)
+    button_font = pygame.font.SysFont('consolas',28)
 
     # game variables
     started = False
@@ -286,7 +286,7 @@ def main():
             start_button.draw()
         else:
             message = text_font.render(' '.join(selected), True, midnight)
-            screen.blit(message, message.get_rect(topleft = (150, 130)))
+            screen.blit(message, message.get_rect(topleft = (75, 130)))
             score = text_font_small.render('Your score: '+str(correct_count)+'/20', True, midnight)
             screen.blit(score, score.get_rect(center = (550, 65)))
             for option in option_buttons:
