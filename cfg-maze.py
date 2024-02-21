@@ -16,7 +16,7 @@ baby = '#DBF5F0'
 ##########
 
 # get cfg from a .csv file of either node,word or node,node1,node2
-with open('cfg.csv', 'r') as inputfile:
+with open('assets/cfg.csv', 'r') as inputfile:
     cr = csv.reader(inputfile)
     # get the node that have more nodes in it
     content = [[line[0],[line[1],line[2]]] for line in cr if len(line)>2]
