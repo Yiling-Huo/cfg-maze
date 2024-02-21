@@ -37,7 +37,7 @@ with open('assets/cfg.csv', 'r') as inputfile:
 #cfg = {"NP":[["D","N"],"cats","dogs","humans"],"VP":[["V","NP"],"walk","sleep","cry"],"S":[["NP","VP"]],"D":["the","a"],"N":["cat","dog","human"],"V":["love","tolerate","like"]}
 
 # a dictionary that has nodes as keys, and nodes that are identical or can occupy the same syntactic position as the node as values
-block_list = {'NPs':['NPs','Ns','NPp','Np','A'], 'NPp':['NPs','Ns','NPp','Np','A'], 'Ns':['Ns','Np','NPs','NPp','A'], 'Np':['Ns','Np','NPs','NPp','A'],'VPs':['VPs','Vs','AD'], 'VPp':['VPp','Vp','AD'], 'Vs':['Vs', 'VPs'], 'Vp':['Vp', 'VPp'], 'DP':['DP','D','NPp','Np','A'], 'D':['DP','D','NPp','Np','A'], 'A':['A','NPs','Ns','NPp','Np','D','DP'], 'AD':['AD']}
+block_list = {'NPs':['NPs','Ns','NPp','Np','A'], 'NPp':['NPs','Ns','NPp','Np','A'], 'Ns':['Ns','Np','NPs','NPp','A'], 'Np':['Ns','Np','NPs','NPp','A'],'VPs':['VPs','Vs','AD'], 'VPp':['VPp','Vp','AD'], 'Vs':['Vs', 'VPs','AD'], 'Vp':['Vp', 'VPp','AD'], 'DP':['DP','D','NPp','Np','A'], 'D':['DP','D','NPp','Np','A'], 'A':['A','NPs','Ns','NPp','Np','D','DP'], 'AD':['AD']}
 
 ##########
 # Classes
